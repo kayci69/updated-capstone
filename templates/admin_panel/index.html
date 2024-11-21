@@ -2,6 +2,7 @@
 <!DOCTYPE html>
 <html>
 
+
 <head>
   <meta charset="utf-8" />
   <title>Barangay AI</title>
@@ -17,6 +18,7 @@
   <link rel="stylesheet" type="text/css" href="{% static 'vendors/styles/style.css' %}" />
   <link rel="stylesheet" type="text/css" href="{% static 'vendors/styles/index.css' %}" />
 
+
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag() {
@@ -24,10 +26,22 @@
     }
     gtag("js", new Date());
 
+
     gtag("config", "UA-119386393-1");
   </script>
 
+
   <style>
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+      /* Prevents horizontal scrolling */
+     
+    }
+
+
     .pre-loader {
       background-image: url("{% static 'src/images/hall.jpg' %}");
       background-size: cover;
@@ -45,10 +59,12 @@
       border-color: #ffffff;
     }
 
+
     .loader-logo img {
       width: 100px;
       height: auto;
     }
+
 
     .pre-loader-box {
       width: 210px;
@@ -60,27 +76,263 @@
       text-align: center;
     }
 
+
     .loading-text {
       font-size: 50px;
       margin-bottom: 500px;
       color: #000000;
     }
 
-    #barChart,
+
     #pieChart {
-      width: 100%;
-      max-width: 600px;
-      height: 400px;
+      max-width: 150%;
+      max-height: 150%;
+      align-items: right;
+    }
+
+
+    /* Center align the card initially */
+    .card {
+      width: 300px;
+      margin: 0 auto;
+      background: #fff;
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+    }
+
+
+    /* Move the card to the right side */
+    .row {
+      display: flex;
+      justify-content: flex-end;
+      padding: 15px;
+    }
+
+
+    .card-body {
+      padding: 15px;
+      text-align: center;
+    }
+
+
+    .card-title {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 15px;
+    }
+
+
+    .chart-container {
+      width: 250px;
+      height: 250px;
       margin: auto;
+    }
+
+
+    /* Main container styling */
+    .stats-container {
+      display: flex;
+      gap: 1px;
+      justify-content: center;
+      padding: 20px;
+      flex-wrap: wrap;
+      margin-top: -20px;
+    }
+
+
+    /* Individual stat boxes */
+    .stats-box {
+      background-color: #f8f9fc;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      width: 280px;
+      padding: 10px;
+      text-align: left;
+      margin-bottom: -20px;
+    }
+
+
+    /* Header section */
+    .stats-header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 10px;
+    }
+
+
+    .stats-icon {
+      font-size: 22px;
+      margin-right: 8px;
+      text-align: left;
+
+
+    }
+
+
+    .blue {
+      color: #007bff;
+    }
+
+
+    .green {
+      color: #28a745;
+    }
+
+
+    .red {
+      color: #dc3545;
+    }
+
+
+    .orange {
+      color: #fd7e14;
+    }
+
+
+    /* Content section */
+    .stats-content h2 {
+      font-size: 32px;
+      margin: 0;
+      color: #333;
+    }
+
+
+    .stats-content p {
+      font-size: 14px;
+      color: #666;
+      margin: 5px 0 0;
+    }
+
+
+    /* Responsive adjustments */
+    @media (max-width: 468px) {
+      .stats-box {
+        background-color: #f8f9fc;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        padding: 10px;
+        transform: scale(0.4);
+        transform-origin: top left;
+        margin-bottom: 10px;
+      }
+
+
+      .stats-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+      }
+
+
+      .stats-box canvas {
+        width: 80%;
+        /* Shrink charts with the box */
+        height: auto;
+      }
+
+
+      .stats-total {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 18px;
+        font-weight: bold;
+        color: #333;
+        z-index: 10;
+        pointer-events: none;
+        text-align: center;
+      }
+
+
+
+
+      .stats-details {
+        font-size: 14px;
+        margin-top: 10px;
+      }
+
+
+      canvas {
+        width: 50% !important;
+        height: 50% !important;
+      }
+    }
+
+
+
+
+    .stats-small-box {
+      padding: 5px 10px;
+      border-radius: 5px;
+      margin: 5px 0;
+      color: white;
+      font-size: 12px;
+      display: inline-block;
+    }
+
+
+    .stats-small-box.blue {
+      background-color: #4A90E2;
+    }
+
+
+    .stats-small-box.pink {
+      background-color: #FF6F91;
+    }
+
+
+    .stats-small-box.lime {
+      background-color: #00FF00;
+    }
+
+
+    .stats-small-box.olive {
+      background-color: #808000;
+    }
+
+
+    footer {
+      padding: 5px 10px;
+      /* Reduce padding */
+      margin: 5px 5px;
+      /* Remove extra margin */
+      font-size: 12px;
+      /* Smaller font size */
+      background-color: #ffffff;
+      /* Adjust background color if needed */
+      text-align: center;
+      /* Center-align text */
+    }
+
+
+    footer a {
+      margin: 0 5px;
+      /* Reduce spacing between links */
+      font-size: 12px;
+      /* Smaller font for links */
+    }
+
+
+    footer .footer-section {
+      display: inline-block;
+      /* Inline-block to keep sections compact */
+      margin-bottom: 5px;
+      /* Reduce bottom margin */
     }
   </style>
 </head>
+
 
 <body>
   <div class="pre-loader">
     <div class="pre-loader-box">
       <div class="loader-logo">
-        <img src="{%static 'src/images/BAi_LOGO.png' %}" alt="AI Logo" />
+        <img src="{% static 'src/images/BAi_LOGO.png' %}" alt="AI Logo" />
       </div>
       <div class="loader-progress" id="progress_div">
         <div class="bar" id="bar1"></div>
@@ -89,6 +341,7 @@
       <div class="loading-text">Loading...</div>
     </div>
   </div>
+
 
   <div class="header">
     <div class="header-left">
@@ -103,96 +356,149 @@
         </div>
       </div>
 
+
       {% include 'admin_panel/notification.html' %}
       {% include 'admin_panel/dropdown.html' %}
     </div>
   </div>
 
+
   {% include 'admin_panel/right_sidebar.html' %}
   {% include 'admin_panel/left_sidebar.html' %}
 
+
   <div class="mobile-menu-overlay"></div>
 
+
   <div class="main-container">
-    <div class="pd-ltr-20">
-      <div class="card-box pd-20 height-100-p mb-30" style="position: relative; padding: 20px">
-        <div class="row align-items-center">
-          <div class="col-md-2">
-            <img src="{%static 'vendors/images/banner-img.png' %}" alt="Banner"
-              style="width: 100%; max-width: 10000px; height: auto" />
-          </div>
-          <div class="col-md-8">
-            <h4 class="font-20 weight-500 mb-1 text-capitalize">
-              Welcome back
-            </h4>
-            <div class="weight-600 font-24 text-blue" id="welcome-name"></div>
-          </div>
-          <div class="col-md-2" style="text-align: right">
-            <!-- Set max width and allow wrapping for the date -->
-            <div id="date-display" class="weight-400 font-16 text-black" style="font-weight: bold; font-size: 12px">
-              <!-- Date text goes here -->
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+
+
   </div>
+
 
   <!-- Cards Section -->
-  <div class="row mt-4 justify-content-center">
-    <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
-      <div class="card h-100" style="max-width: 100%; margin: 0 auto">
-        <div class="card-body text-center" style="padding: 15px">
-          <img src="{% static 'src/images/child mal.png' %}" alt="Child Malnourished" class="card-img"
-            style="max-width: 100%; height: auto" />
-          <h5 class="card-title mt-2">
-            <a href="{% url 'admin_child_record' %}" style="text-decoration: underline; color: blue">Child
-              Malnourished</a>
-          </h5>
+  <div class="row stats-container">
+    <!-- Population Box -->
+    <div class="col">
+      <div class="stats-box">
+        <div class="stats-header">
+          <span class="stats-icon blue">👥</span>
+          <span class="stats-title">Population</span>
+        </div>
+        <div class="stats-content">
+          <h2>43,200</h2>
+          <p>Total Population</p>
         </div>
       </div>
     </div>
-    <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
-      <div class="card h-100" style="max-width: 100%; margin: 0 auto">
-        <div class="card-body text-center" style="padding: 15px">
-          <img src="{% static 'src/images/maternal.png' %}" alt="Maternal" class="card-img"
-            style="max-width: 100%; height: auto" />
-          <h5 class="card-title mt-2">
-            <a href="{% url 'admin_maternal_record' %}" style="text-decoration: underline; color: blue">Maternal</a>
-          </h5>
+
+
+    <!-- Child 0-59 Months Old Box -->
+    <div class="col">
+      <div class="stats-box">
+        <div class="stats-header">
+          <span class="stats-icon green">👶</span>
+          <span class="stats-title">Child 0-59 Months Old</span>
+        </div>
+        <div class="stats-content">
+          <h2>2,240</h2>
+          <p>Children Count</p>
         </div>
       </div>
     </div>
-    <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
-      <div class="card h-100" style="max-width: 100%; margin: 0 auto">
-        <div class="card-body text-center" style="padding: 15px">
-          <img src="{%static 'src/images/total.jpg' %}" alt="Total" class="card-img"
-            style="max-width: 100%; height: auto" />
-          <h5 class="card-title mt-2">Total</h5>
+
+
+    <!-- Maternal Box -->
+    <div class="col">
+      <div class="stats-box">
+        <div class="stats-header">
+          <span class="stats-icon red">🤰</span>
+          <span class="stats-title">Maternal</span>
+        </div>
+        <div class="stats-content">
+          <h2>3,424</h2>
+          <p>Maternal Cases</p>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- Rehabilitated Child Box -->
+    <div class="col">
+      <div class="stats-box">
+        <div class="stats-header">
+          <span class="stats-icon orange">🏥</span>
+          <span class="stats-title">Rehabilitated Child</span>
+        </div>
+        <div class="stats-content">
+          <h2>1000</h2>
+          <p>Rehabilitated Cases</p>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Two Boxes Section -->
-  <div class="row mt-4 justify-content-center">
-    <!-- Box 1: Bar Graph -->
-    <div class="col-6 mb-3">
-      <div class="card h-100" style="max-width: 100%; margin: 0 auto">
-        <div class="card-body text-center" style="padding: 20px">
-          <h5 class="card-title">Records Graph</h5>
-          <div style="width: 100%; max-width: 600px; height: 400px; margin: auto">
-            <canvas id="barChart"></canvas>
-          </div>
+
+  <div class="row stats-container">
+    <!-- Population Chart -->
+    <div class="col">
+      <div class="stats-box">
+        <canvas id="populationChart"></canvas>
+        <div class="stats-total"> <b>43,200</b></div> <!-- Centered total -->
+        <div class="stats-details">
+          <div class="stats-small-box blue">Male: 21,000</div>
+          <div class="stats-small-box pink">Female: 22,200</div>
         </div>
       </div>
     </div>
-    <!-- Box 2: Pie Chart -->
+
+
+    <!-- Children 0-59 Months Old -->
+    <div class="col">
+      <div class="stats-box">
+        <canvas id="childrenChart"></canvas>
+        <div class="stats-total"><b>2,240</b></div> <!-- Centered total -->
+        <div class="stats-details">
+          <div class="stats-small-box blue">Male: 1,100</div>
+          <div class="stats-small-box pink">Female: 1,140</div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- Maternal Chart -->
+    <div class="col">
+      <div class="stats-box">
+        <canvas id="maternalChart"></canvas>
+        <div class="stats-total"><b>3,424</b></div> <!-- Centered total -->
+        <div class="stats-details">
+          <div class="stats-small-box lime">Pregnant: 1,500</div>
+          <div class="stats-small-box olive">Lactating: 1,924</div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- Rehabilitated Children -->
+    <div class="col">
+      <div class="stats-box">
+        <canvas id="rehabilitatedChart"></canvas>
+        <div class="stats-total"><b>1,000</b></div> <!-- Centered total -->
+        <div class="stats-details">
+          <div class="stats-small-box blue">Male: 450</div>
+          <div class="stats-small-box pink">Female: 550</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pie Chart Section -->
+  <div class="row mt-4">
     <div class="col-6 mb-3">
-      <div class="card h-100" style="max-width: 100%; margin: 0 auto">
-        <div class="card-body text-center" style="padding: 20px">
+      <div class="card">
+        <div class="card-body">
           <h5 class="card-title">Month of August 2024</h5>
-          <div style="width: 100%; max-width: 600px; height: 400px; margin: auto">
+          <div class="chart-container">
             <canvas id="pieChart"></canvas>
           </div>
         </div>
@@ -200,118 +506,27 @@
     </div>
   </div>
 
-  <div class="footer-wrap pd-20 mb-20 card-box">All rights reserved.</div>
+
+  <footer>
+    <div class="footer-section">
+      <p>&copy; Barangay Ai. All rights reserved.</p>
+      <!--<a href="/privacy">Privacy Policy</a> | <a href="/terms">Terms of Service</a> -->
+    </div>
+  </footer>
+
 
   <!-- js -->
-  <script src="{%static 'vendors/scripts/core.js' %}"></script>
-  <script src="{%static 'vendors/scripts/script.min.js' %}"></script>
-  <script src="{%static 'vendors/scripts/process.js' %}"></script>
-  <script src="{%static 'vendors/scripts/layout-settings.js' %}"></script>
-  <script src="{%static 'src/plugins/apexcharts/apexcharts.min.js' %}"></script>
-  <script src="{%static 'src/plugins/datatables/js/jquery.dataTables.min.js' %}"></script>
-  <script src="{%static 'src/plugins/datatables/js/dataTables.bootstrap4.min.js' %}"></script>
-  <script src="{%static 'src/plugins/datatables/js/dataTables.responsive.min.js' %}"></script>
-  <script src="{%static 'src/plugins/datatables/js/dataTables.bootstrap4.min.js' %}"></script>
-  <script src="{%static 'vendors/scripts/dashboard.js' %}"></script>
+  <script src="{% static 'vendors/scripts/core.js' %}"></script>
+  <script src="{% static 'vendors/scripts/script.min.js' %}"></script>
+  <script src="{% static 'vendors/scripts/process.js' %}"></script>
+  <script src="{% static 'vendors/scripts/layout-settings.js' %}"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="{%static 'src/plugins/fullcalendar/fullcalendar.min.js' %}"></script>
+  <script src="{%static 'vendors/scripts/programsettings.js' %}"></script>
+
 
   <script>
     document.addEventListener("DOMContentLoaded", function () {
-      // Load profile name and image from local storage
-      const profileName = localStorage.getItem("profileName");
-      const profileImage = localStorage.getItem("profileImage");
-
-      console.log("Loaded profile name:", profileName); // Debugging log
-      console.log("Loaded profile image:", profileImage); // Debugging log
-
-      // Update the dropdown with the stored profile data
-      if (profileName) {
-        document.getElementById("dropdown-profile-name").textContent =
-          profileName;
-      }
-
-      if (profileImage) {
-        document.getElementById("dropdown-profile-picture").src =
-          profileImage;
-      }
-    });
-
-    document.addEventListener("DOMContentLoaded", function () {
-      // Retrieve profile name from localStorage
-      const profileData = JSON.parse(localStorage.getItem("profileData"));
-      const profileName = profileData ? profileData.fullName : "User";
-
-      // Update the welcome message on the dashboard
-      document.getElementById("welcome-name").textContent = profileName;
-
-      // Display the current date (optional)
-      const dateDisplay = document.getElementById("date-display");
-      const now = new Date();
-      dateDisplay.textContent = now.toLocaleDateString("en-US", {
-        weekday: "long",
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-      });
-    });
-
-    function updateDate() {
-      const dateElement = document.getElementById("date-display");
-      const options = { year: "numeric", month: "long", day: "numeric" };
-      const today = new Date().toLocaleDateString(undefined, options);
-      dateElement.textContent = today;
-    }
-
-    updateDate();
-    setInterval(updateDate, 1000 * 60 * 60 * 24); // Update date daily
-
-    document.addEventListener("DOMContentLoaded", function () {
-      // Bar Chart Configuration
-      const barCtx = document.getElementById("barChart").getContext("2d");
-      const barChart = new Chart(barCtx, {
-        type: "bar",
-        data: {
-          labels: [
-            "January",
-            "February",
-            "March",
-            "April",
-            "May",
-            "June",
-            "July",
-            "August",
-            "September",
-            "October",
-            "November",
-            "December",
-          ],
-          datasets: [
-            {
-              label: "Children Records",
-              data: [12, 19, 3, 5, 2, 3, 7, 4, 6, 8, 10, 15], // Replace with actual data
-              backgroundColor: "#4e73df",
-              borderWidth: 1,
-            },
-            {
-              label: "Pregnant Records",
-              data: [10, 15, 5, 8, 6, 4, 5, 3, 7, 9, 11, 13], // Replace with actual data
-              backgroundColor: "#1cc88a",
-              borderWidth: 1,
-            },
-          ],
-        },
-        options: {
-          responsive: true, // Set responsive to true
-          maintainAspectRatio: false,
-          scales: {
-            y: {
-              beginAtZero: true,
-            },
-          },
-        },
-      });
-
-      // Updated Pie Chart Configuration
       const pieCtx = document.getElementById("pieChart").getContext("2d");
       const pieChart = new Chart(pieCtx, {
         type: "pie",
@@ -326,9 +541,19 @@
           ],
         },
         options: {
-          responsive: true, // Set responsive to true
+          responsive: true,
           maintainAspectRatio: false,
           plugins: {
+            legend: {
+              position: "top", // Moves the legend to the top
+              labels: {
+                boxWidth: 12, // Smaller square size for legend
+                boxHeight: 12,
+                padding: 7, // Adjusts spacing between legend items
+
+
+              },
+            },
             tooltip: {
               callbacks: {
                 label: function (context) {
@@ -346,7 +571,78 @@
         },
       });
     });
+
+
+    const canvas = document.querySelectorAll("canvas");
+    canvas.forEach((c) => {
+      c.width = 50; // Match box width
+      c.height = 50; // Match box height
+    });
+
+
+
+
+    // Function to create donut charts
+    function createDonutChart(canvasId, data) {
+      const ctx = document.getElementById(canvasId).getContext('2d');
+      new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+          labels: data.labels,
+          datasets: [
+            {
+              data: data.values,
+              backgroundColor: data.colors,
+            },
+          ],
+        },
+        options: {
+          cutout: '70%', // Creates a hollow center
+          responsive: true,
+          plugins: {
+            legend: {
+              display: false, // Hides the legend for simplicity
+            },
+          },
+        },
+      });
+    }
+
+
+    // Example chart data
+    createDonutChart('populationChart', {
+      labels: ['Male', 'Female'],
+      values: [21000, 22200],
+      colors: ['#4A90E2', '#FF6F91'],
+    });
+
+
+    createDonutChart('childrenChart', {
+      labels: ['Male', 'Female'],
+      values: [1100, 1140],
+      colors: ['#4A90E2', '#FF6F91'],
+    });
+
+
+    createDonutChart('maternalChart', {
+      labels: ['Pregnant', 'Lactating'],
+      values: [1500, 1924],
+      colors: ['#00FF00', '#FFA500'],
+    });
+
+
+    createDonutChart('rehabilitatedChart', {
+      labels: ['Male', 'Female'],
+      values: [450, 550],
+      colors: ['#4A90E2', '#FF6F91'],
+    });
+
+
+
+
   </script>
 </body>
 
+
 </html>
+
