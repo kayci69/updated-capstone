@@ -324,6 +324,18 @@
           <form class="tab-wizard2 wizard-circle wizard" method="POST" action="{% url 'register' %}">
             {% csrf_token %}
             <!-- Credentials Section -->
+            {% if error %}
+            <div class="alert alert-danger">{{ error }}</div>
+            {% endif %}
+            {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
+                    {{ message }}
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
 
             <body>
               <div class="card-body">

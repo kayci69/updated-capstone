@@ -55,20 +55,16 @@ def register(request):
         gender = request.POST.get('gender')
         contact_number = request.POST.get('contact_number')
         
-        print(' i am register view ',request.POST)
 
         if password != confirm_password:
-            print('i am bad ')
             messages.error(request, "Passwords do not match.")
             return render(request, 'users/register.html')
 
         if not all([email, username, password, first_name, last_name, gender, contact_number]):
-            print(' i am bad')
             messages.error(request, "Please fill in all required fields.")
             return render(request, 'users/register.html')
 
         try:
-            print('i am in good')
             user = CustomUser()
             user.email=email
             user.username=username
@@ -82,11 +78,10 @@ def register(request):
             return redirect('login')
 
         except Exception as e:
-            print(' sorry i am mistake run')
-            messages.error(request, f"An error occurred: {str(e)}")
+            messages.error(request, 'you are already existing email address try to login')
             return render(request, 'users/register.html')
-
-    return render(request, 'users/register.html')
+    else:
+        return render(request, 'users/register.html')
 
 # Forgot Password View
 def forgot_pass(request):
