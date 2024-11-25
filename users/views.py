@@ -74,12 +74,12 @@ def register(request):
             user.contact_number=contact_number
             user.password=make_password(password) 
             user.save()
-            messages.success(request, "Registration successful! Please log in below.")
-            return redirect('login')
+            return render(request, 'users/register.html',{'login':True})
+
 
         except Exception as e:
-            messages.error(request, 'you are already existing email address try to login')
-            return render(request, 'users/register.html')
+
+            return render(request, 'users/register.html',{'already_exist':True})
     else:
         return render(request, 'users/register.html')
 
