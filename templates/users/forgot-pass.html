@@ -281,65 +281,112 @@
                         <div class="login-title">
                             <h5 class="text-center text-primary margin-bottom -10px">Forgot your password?</h5>
                         </div>
-<<
-                        <form action="{% url 'forgotpassword' %}" method="post">
+
+                        <form action="{% url 'forgotpassword' %}" method="post" id="resetForm">
                             {% csrf_token %}
-                            <div class="input-group custom mb-3">
-                                <input type="email" name="email" class="form-control form-control-lg"
-                                    placeholder="Email Address" required>
-                                <div class="error-message" id="error-email">Enter a valid Gmail
-                                    address(e.g.,yourname@gmail.com).
-                                </div>
-                            </div>
                             <div class="input-section">
                                 <div class="input-group custom mb-3">
-                                    <input type="password" maxlength="50" id="password" class="form-control"
-                                        name='password' required placeholder="Enter New Password" required>
+                                    <input type="email" maxlength="50" id="email" class="form-control" name="email" required placeholder="Enter Email address">
                                     <i class="bi bi-eye" id="new-pass-eye"></i>
                                 </div>
+                                <!-- Password Field -->
+                                <div class="input-group custom mb-3">
+                                    <input type="password" maxlength="50" id="password" class="form-control" name="password" required placeholder="Enter New Password">
+                                    <i class="bi bi-eye" id="new-pass-eye"></i>
+                                </div>
+                        
                                 <!-- Password Policy -->
                                 <div class="password-policy p-0 pt-2 ps-2">
-                                    <span class="pp-header">Password must contain</span>
+                                    <span class="pp-header">Password must contain:</span>
                                     <ul class="requirement-list p-0">
-                                        <li>
-                                            <i class="bi bi-circle" id="rule-1"></i>
-                                            <span>At least 1 number (0...9)</span>
-                                        </li>
-                                        <li>
-                                            <i class="bi bi-circle" id="rule-2"></i>
-                                            <span>At least 8 characters length</span>
-                                        </li>
-                                        <li>
-                                            <i class="bi bi-circle" id="rule-3"></i>
-                                            <span>At least 1 lowercase letter (a...z)</span>
-                                        </li>
-                                        <li>
-                                            <i class="bi bi-circle" id="rule-4"></i>
-                                            <span>At least 1 uppercase letter (A...Z)</span>
-                                        </li>
-                                        <li>
-                                            <i class="bi bi-circle" id="rule-5"></i>
-                                            <span>At least 1 special symbol</span>
-                                        </li>
+                                        <li><i class="bi bi-circle" id="rule-1"></i><span>At least 1 number (0...9)</span></li>
+                                        <li><i class="bi bi-circle" id="rule-2"></i><span>At least 8 characters</span></li>
+                                        <li><i class="bi bi-circle" id="rule-3"></i><span>At least 1 lowercase letter (a...z)</span></li>
+                                        <li><i class="bi bi-circle" id="rule-4"></i><span>At least 1 uppercase letter (A...Z)</span></li>
+                                        <li><i class="bi bi-circle" id="rule-5"></i><span>At least 1 special character (!@#$%^&*)</span></li>
                                     </ul>
                                 </div>
-
-                            </div>
-
-                            <div class="input-group custom">
-                                <input type="password" name="confrim_password" class="form-control form-control-lg"
-                                    placeholder="Confirm New Password" required>
-                                <div class="input-group-append custom">
-                                    <span class="input-group-text"><i class="dw dw-padlock1"></i></span>
+                        
+                                <!-- Confirm Password Field -->
+                                <div class="input-group custom mb-3">
+                                    <input type="password" id="confirm-password" class="form-control" name="confirm_password" required placeholder="Confirm New Password">
+                                </div>
+                                <div class="error-message" id="error-confirm-password" style="color: red; display: none;">
+                                    Passwords do not match.
                                 </div>
                             </div>
+                        
                             <div class="row align-items-center">
                                 <div class="col-12 d-flex justify-content-between">
                                     <a class="btn btn-outline-secondary mx-2" href="{% url 'login' %}">Cancel</a>
-                                    <input class="btn btn-primary " type="submit" value="Reset">
+                                    <input class="btn btn-primary" type="submit" value="Reset">
                                 </div>
                             </div>
                         </form>
+                        
+                        <script>
+                            const form = document.getElementById('resetForm');
+                            const passwordField = document.getElementById('password');
+                            const confirmPasswordField = document.getElementById('confirm-password');
+                            const confirmPasswordError = document.getElementById('error-confirm-password');
+                        
+                            // Password Validation Rules
+                            function validatePassword(password) {
+                                const rules = {
+                                    hasNumber: /\d/.test(password),
+                                    hasLowercase: /[a-z]/.test(password),
+                                    hasUppercase: /[A-Z]/.test(password),
+                                    hasSpecialChar: /[!@#$%^&*]/.test(password),
+                                    minLength: password.length >= 8,
+                                };
+                                return rules;
+                            }
+                        
+                            // Update Password Validation Feedback
+                            function updatePasswordRules(password) {
+                                const rules = validatePassword(password);
+                                document.getElementById('rule-1').className = rules.hasNumber ? 'bi bi-check-circle text-success' : 'bi bi-circle';
+                                document.getElementById('rule-2').className = rules.minLength ? 'bi bi-check-circle text-success' : 'bi bi-circle';
+                                document.getElementById('rule-3').className = rules.hasLowercase ? 'bi bi-check-circle text-success' : 'bi bi-circle';
+                                document.getElementById('rule-4').className = rules.hasUppercase ? 'bi bi-check-circle text-success' : 'bi bi-circle';
+                                document.getElementById('rule-5').className = rules.hasSpecialChar ? 'bi bi-check-circle text-success' : 'bi bi-circle';
+                                return Object.values(rules).every(Boolean);
+                            }
+                        
+                            // Form Submission Handler
+                            form.addEventListener('submit', (event) => {
+                                const password = passwordField.value;
+                                const confirmPassword = confirmPasswordField.value;
+                        
+                                // Validate Password
+                                if (!updatePasswordRules(password)) {
+                                    event.preventDefault(); // Prevent submission
+                                    alert('Your password does not meet the requirements.');
+                                    return;
+                                }
+                        
+                                // Validate Confirm Password
+                                if (password !== confirmPassword) {
+                                    confirmPasswordError.style.display = 'block';
+                                    event.preventDefault(); // Prevent submission
+                                } else {
+                                    confirmPasswordError.style.display = 'none';
+                                }
+                            });
+                        
+                            // Real-time Validation for Password Field
+                            passwordField.addEventListener('input', () => {
+                                updatePasswordRules(passwordField.value);
+                            });
+                        
+                            // Real-time Validation for Confirm Password Field
+                            confirmPasswordField.addEventListener('input', () => {
+                                if (passwordField.value === confirmPasswordField.value) {
+                                    confirmPasswordError.style.display = 'none';
+                                }
+                            });
+                        </script>
+                        
                     </div>
                 </div>
             </div>
@@ -358,86 +405,43 @@
 
 
 
+
+    <!--sweet alert -->
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        {% if password_chanaged %}
+        Swal.fire({
+            title: 'Password Changed Successfully!',
+            icon: 'success',
+            confirmButtonText: 'Log In',
+            confirmButtonColor: '#3085d6',
+            showCancelButton: true,
+            cancelButtonText: 'Close',
+            cancelButtonColor: '#d33',
+            customClass: {
+                popup: 'custom-swal-popup'
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = "{% url 'login' %}";
+            } else if (result.dismiss === Swal.DismissReason.cancel) {
+                console.log("Popup closed");
+            }
+        });
+        {% endif %}
+    });
+</script>
+
+    <!-- end of sweet alert -->
+
     <!-- js -->
     <script src="{% static 'vendors/scripts/core.js' %}"></script>
     <script src="{% static 'vendors/scripts/script.min.js' %}"></script>
     <script src="{% static 'vendors/scripts/process.js' %}"></script>
     <script src="{% static 'vendors/scripts/layout-settings.js' %}"></script>
 
-    <script>
-
-        document.getElementById("new-password-field").addEventListener("input", function () {
-            let password = this.value;
-
-            // Check each rule and update icons accordingly
-            checkPasswordRules(password);
-        });
-
-        function checkPasswordRules(password) {
-            // Rule 1: At least 1 number (0...9)
-            let rule1 = /[0-9]/.test(password);
-            updateRuleIcon("rule-1", rule1);
-
-            // Rule 2: At least 8 characters length
-            let rule2 = password.length >= 8;
-            updateRuleIcon("rule-2", rule2);
-
-            // Rule 3: At least 1 lowercase letter (a...z)
-            let rule3 = /[a-z]/.test(password);
-            updateRuleIcon("rule-3", rule3);
-
-            // Rule 4: At least 1 uppercase letter (A...Z)
-            let rule4 = /[A-Z]/.test(password);
-            updateRuleIcon("rule-4", rule4);
-
-            // Rule 5: At least 1 special symbol
-            let rule5 = /[!@#$%^&*(),.?":{}|<>]/.test(password);
-            updateRuleIcon("rule-5", rule5);
-        }
-
-        function updateRuleIcon(ruleId, isValid) {
-            let icon = document.getElementById(ruleId);
-
-            if (isValid) {
-                icon.classList.add("pass-valid");
-                icon.classList.remove("pass-invalid");
-            } else {
-                icon.classList.add("pass-invalid");
-                icon.classList.remove("pass-valid");
-            }
-        }
-
-        document.getElementById("new-password-field").addEventListener("input", function () {
-            let password = this.value;
-
-            // Regular expressions for each rule
-            const hasNumber = /\d/;
-            const hasLowerCase = /[a-z]/;
-            const hasUpperCase = /[A-Z]/;
-            const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/;
-            const minLength = 8;
-
-            // Check password validity
-            checkPolicy(hasNumber.test(password), 'num-check');
-            checkPolicy(password.length >= minLength, 'length-check');
-            checkPolicy(hasLowerCase.test(password), 'lowercase-check');
-            checkPolicy(hasUpperCase.test(password), 'uppercase-check');
-            checkPolicy(hasSpecialChar.test(password), 'special-check');
-        });
-
-        function checkPolicy(isValid, elementId) {
-            const element = document.getElementById(elementId);
-            if (isValid) {
-                element.classList.add('valid');
-                element.classList.remove('invalid');
-            } else {
-                element.classList.add('invalid');
-                element.classList.remove('valid');
-            }
-        }
-
-
-    </script>
 </body>
 
 </html>

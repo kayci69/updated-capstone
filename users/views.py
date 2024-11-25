@@ -107,13 +107,16 @@ def superadmin_dashboard(request):
 def forgotPassword(request):
     if request.method == 'POST':
         email = request.POST['email']
+        password=request.POST['password']
         if CustomUser.objects.filter(email=email).exists():
             user = CustomUser.objects.get(email__exact=email)
+            user.set_password(password)
+            user.save()
 
             # Reset password email
             current_site = get_current_site(request)
-            mail_subject = 'Reset Your Password'
-            message = render_to_string('users/reset_password_email.html', {
+            mail_subject = 'Changed Your Password'
+            message = render_to_string('users/password_change.html', {
                 'user': user,
                 'domain': current_site,
                 'uid': urlsafe_base64_encode(force_bytes(user.pk)),
@@ -122,9 +125,10 @@ def forgotPassword(request):
             to_email = email
             send_email = EmailMessage(mail_subject, message, to=[to_email])
             send_email.send()
+            
+            print('password chanaged sucessfully')
 
-            messages.success(request, 'Password reset email has been sent to your email address.')
-            return redirect('login')
+            return render(request, 'users/forgot-pass.html',{'password_chanaged':True})
         else:
             messages.error(request, 'Account does not exist!')
             return redirect('forgotpassword')
