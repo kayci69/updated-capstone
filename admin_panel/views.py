@@ -17,20 +17,38 @@ def admin_dashboard(request):
 def admin_events(request):
     return render(request, 'admin_panel/events.html')
 
-@login_required
 def admin_profile(request):
-    user = request.user
+    user = request.user  # Get the logged-in user
 
     if request.method == 'POST':
-        user.first_name = request.POST.get('first_name', '')
-        user.last_name = request.POST.get('last_name', '')
-        user.username = request.POST.get('username', '')
-        user.email = request.POST.get('email', '')
-        user.birth_date = request.POST.get('birth_date', '')
-        user.gender = request.POST.get('gender', '')
-        user.contact_number = request.POST.get('contact_number', '')
-        
+        print(request.POST, 'profile data')
+
+        # Retrieve form data
+        first_name = request.POST.get('first_name', '')
+        last_name = request.POST.get('last_name', '')
+        username = request.POST.get('username', '')
+        email = request.POST.get('email', '')
+        birth_date = request.POST.get('birth_date', '') 
+        gender = request.POST.get('gender', '')
+        contact_number = request.POST.get('contact_number', '')
+
+        # Update user fields
+        user.first_name = first_name
+        user.last_name = last_name
+        user.username = username
+        user.email = email
+        user.gender = gender
+        user.contact_number = contact_number
+
+        # Convert birth_date string to a DateField
+        if birth_date:
+            from datetime import datetime
+            user.birth_date = datetime.strptime(birth_date, '%Y-%m-%d').date()
+
+        # Save updated user
         user.save()
+
+        # Display success message
         messages.success(request, 'Profile updated successfully!')
         return redirect('admin_profile')
 
@@ -200,3 +218,19 @@ def delete_record(request,id):
     record.delete()
     return redirect('admin_child_record')
     
+
+from .models import Profile    
+def update_profile(request):
+    user=request.user
+    if request.method == 'POST':
+        print('data',request.POST)
+      
+        profile=request.FILES.get('profile_photo')
+        user.photo=profile
+        user.save()
+        messages.success(request,'profile has been updated')
+        return redirect('admin_profile')
+        
+    else:
+        return render(request, 'admin_panel/profile.html', {'user': user})
+                

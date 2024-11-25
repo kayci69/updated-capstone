@@ -190,6 +190,15 @@
                             <h5 class="text-center text-primary">Forgot your password?</h5>
                         </div>
                         <h6 class="mb-30">Enter your email address to reset your password</h6>
+                        {% if messages %}
+                        <div class="messages">
+                            {% for message in messages %}
+                            <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
+                                {{ message }}
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
                         <form action="{% url 'forgotpassword' %}" method="post">
                             {% csrf_token %}
                             <div class="input-group custom mb-3">

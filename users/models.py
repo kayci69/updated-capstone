@@ -22,6 +22,8 @@ class CustomUser(AbstractUser):
         blank=False,
         null=False
     )
+   
+    birth_date = models.DateField(null=True, blank=True)  
     contact_number = models.CharField(max_length=11, default='', blank=True)
     email = models.EmailField(unique=True)
     last_activity = models.DateTimeField(auto_now=True)
@@ -46,3 +48,12 @@ class CustomUser(AbstractUser):
     class Meta:
         verbose_name = 'User'
         verbose_name_plural = 'Users'
+
+
+class Profile(models.Model):
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, related_name='profile_picture')
+    photo = models.ImageField(upload_to='profile_pictures/', default='profile_pictures/default.png')
+    bio = models.TextField(blank=True, null=True)
+
+    def __str__(self):
+        return f"Profile of {self.user.email}"

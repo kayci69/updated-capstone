@@ -157,6 +157,19 @@ def resetPassword(request):
             user = CustomUser.objects.get(pk=uid)
             user.set_password(password)
             user.save()
+            email=user.email
+            # sucessfully chanaged password email
+            current_site = get_current_site(request)
+            mail_subject = 'Sucessfully Your Password is Chanaged'
+            message = render_to_string('users/password_change.html', {
+                'user': user,
+                'domain': current_site,
+                'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+                'token': default_token_generator.make_token(user),
+            })
+            to_email = email
+            send_email = EmailMessage(mail_subject, message, to=[to_email])
+            send_email.send()
             messages.success(request, 'Password reset successful')
             return redirect('login')
         else:
