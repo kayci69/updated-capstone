@@ -130,9 +130,10 @@ def forgotPassword(request):
 
             return render(request, 'users/forgot-pass.html',{'password_chanaged':True})
         else:
-            messages.error(request, 'Account does not exist!')
-            return redirect('forgotpassword')
-    return render(request, 'users/forgot-pass.html')
+            return render(request, 'users/forgot-pass.html',{'account':True})
+        
+    else:    
+        return render(request, 'users/forgot-pass.html')
 
 
 def resetpassword_validate(request, uidb64, token):

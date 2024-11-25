@@ -430,6 +430,31 @@
                 console.log("Popup closed");
             }
         });
+       
+        {% endif %}
+
+        {% if account %}
+
+
+        Swal.fire({
+            title: 'Email Address is not registred!',
+            icon: 'error',
+            confirmButtonText: 'Chanage Password',
+            confirmButtonColor: '#3085d6',
+            showCancelButton: true,
+            cancelButtonText: 'Close',
+            cancelButtonColor: '#d33',
+            customClass: {
+                popup: 'custom-swal-popup'
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = "{% url 'forgotpassword' %}";
+            } else if (result.dismiss === Swal.DismissReason.cancel) {
+                console.log("Popup closed");
+            }
+        });
+
         {% endif %}
     });
 </script>
